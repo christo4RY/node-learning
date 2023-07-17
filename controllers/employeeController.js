@@ -1,13 +1,16 @@
+const fs = require("fs/promises");
+const path = require("path");
 const datas = {
   getEmployees: require("./../data/employees.json"),
-  setEmployees: (data) => {
+  setEmployees(data) {
     this.getEmployees = data;
   },
 };
+
 const getEmployees = (req, res, next) => {
   res.json(datas.getEmployees);
 };
-const createEmployee = (req, res, next) => {
+const createEmployee = async (req, res, next) => {
   const newEmployee = {
     id: datas.getEmployees.length + 1,
     firstName: req.body.firstName,
@@ -17,6 +20,10 @@ const createEmployee = (req, res, next) => {
     res.status(400).json({ message: "first and last name required." });
     res.end();
   }
+  await fs.writeFile(
+    path.join(__dirname, "..", "data", "employees.json"),
+    JSON.stringify([...datas.getEmployees, newEmployee])
+  );
   datas.setEmployees([...datas.getEmployees, newEmployee]);
   res.status(201).json(datas.getEmployees);
   res.end();

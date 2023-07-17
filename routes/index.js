@@ -1,5 +1,6 @@
 const express = require("express");
 const employeeRoute = require("./employee");
+const authRoute = require("./auth/auth");
 const router = express.Router();
 const path = require("path");
 
@@ -8,6 +9,7 @@ router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/../public", "index.html"));
 });
 
+router.use("/", authRoute);
 router.use("/employees", employeeRoute);
 
 router.all("*", (req, res) => {
