@@ -14,7 +14,7 @@ router
   )
   .post(
     "/",
-    roleVerify(roleLists.Admin, roleLists.Editor),
+    roleVerify(roleLists.Admin, roleLists.Editor, roleLists.User),
     employeeController.createEmployee
   )
   .route("/:id")
